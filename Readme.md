@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Иван Пелипенко](https://up.htmlacademy.ru/javascript/27/user/2176283).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 ---
 
