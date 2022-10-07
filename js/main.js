@@ -1,22 +1,32 @@
-const randomInteger = function (a, b) {
-  if (b < 0 || a < 0 || a == b) {
+/**
+ * Генерация целого числа и числа с плавающей точкой в диапазоне
+ * @param {integer} min — минимум диапазона
+ * @param {integer} max  — максимум диапазона
+ * @param {integer} prec — количество знаков после запятой, по-умолчанию 5
+ * @return {float} — случайное число
+ */
+
+const randomInteger = function (min, max) {
+  if (max < 0 || min < 0 || min === max) {
     return NaN;
-  } if (b < a) {
-    [a, b] = [b, a];
-  } return Math.round(Math.random() * (b - a) + a);
+  }
+  if (max < min) {
+    [min, max] = [max, min];
+  }
+  return Math.round(Math.random() * (max - min) + min);
 };
 
-console.log('Случайное целое число = ' + randomInteger(0, 10));
+console.log(`Случайное целое число = ${randomInteger(0, 10)}`);
 
 
-
-
-const randomFloat = function (a, b, c) {
-  if (b < 0 || a < 0 || a == b || c < 0) {
+const randomFloat = function (min, max, prec) {
+  if (max < 0 || min < 0 || min === max || prec < 0) {
     return NaN;
-  } if (b < a) {
-    [a, b] = [b, a];
-  } return Math.floor((Math.random() * (b - a) + a)*10**c)/10**c;
+  }
+  if (max < min) {
+    [min, max] = [max, min];
+  }
+  return Math.floor((Math.random() * (max - min) + min) * 10 ** prec) / 10 ** prec;
 };
 
-console.log('Случайное число с плавающей точкой = ' + randomFloat(5, 10, 5));
+console.log(`Случайное число с плавающей точкой = ${randomFloat(5, 10, 5)}`);
