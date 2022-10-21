@@ -1,3 +1,36 @@
+const NUMBER_GENERATED_ADS = 10;
+const FOTO_NUMBER = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const TITLE = [ 'то, что Вам понравится', 'лучшее предложение', 'это Вас заинтересует' ];
+const COORDINATES = {
+  LAT_MIN: 35.65000,
+  LAT_MAX: 35.70000,
+  LNG_MIN: 139.70000,
+  LNG_MAX: 139.80000,
+  ZOOM: 5
+};
+const PRICE = {
+  MIN: 10000,
+  MAX: 50000
+};
+const TYPE = [ 'palace', 'flat', 'house', 'bungalow', 'hotel' ];
+const ROOMS = {
+  MIN: 1,
+  MAX: 5
+};
+const GUESTS = {
+  PERSON_MIN: 1,
+  PERSON_MAX: 10
+};
+const CHECK_IN = [ '12:00', '13:00', '14:00' ];
+const CHECK_OUT = [ '12:00', '13:00', '14:00' ];
+const FEATURES = [ 'wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner' ];
+const DESCRIPTION = [ 'Уютная спальня', 'Просторная гостинная', 'Комфортный номер' ];
+const PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+];
+
 /**
  * Генерация целого числа и числа с плавающей точкой в диапазоне
  * @param {integer} min — минимум диапазона
@@ -25,29 +58,10 @@ const getRandomPositiveFloat = (min, max, prec = 1) => {
   const result = Math.random() * (upper - lower) + lower;
   return +result.toFixed(prec);
 };
-
-const numberGeneratedAds = 10;
-
-const fotoNumber = String(getRandomPositiveInteger(1,10)).padStart(2,0);
-const title = [ 'то, что Вам понравится', 'лучшее предложение', 'это Вас заинтересует' ];
-const lat = getRandomPositiveFloat(35.65000, 35.70000, 5);
-const lng = getRandomPositiveFloat(139.70000, 139.80000, 5);
-const address = [ lat, lng ];
-const price = getRandomPositiveInteger(10000, 30000);
-const type = [ 'palace', 'flat', 'house', 'bungalow', 'hotel' ];
-const rooms = getRandomPositiveInteger(1, 5);
-const guests = getRandomPositiveInteger(1, 10);
-const checkin = [ '12:00', '13:00', '14:00' ];
-const checkout = [ '12:00', '13:00', '14:00' ];
-const features = [ 'wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner' ];
-const description = [ 'Уютная спальня', 'Просторная гостинная', 'Комфортный номер' ];
-const photos = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
-];
+// тут я не уловил мысль. По заданию должна быть равна локации
+const ADDRESS = [ getRandomPositiveFloat(COORDINATES.LAT_MIN, COORDINATES.LAT_MAX, COORDINATES.ZOOM), getRandomPositiveFloat(COORDINATES.LNG_MIN, COORDINATES.LNG_MAX, COORDINATES.ZOOM) ];
 /**
- *Ганерация случайного индекса массива
+ * Генерация случайного индекса массива
  * @param {object} elements - массив с данными
  * @return {integer} index - случайный индекс массива
  */
@@ -55,27 +69,28 @@ const getRandomArrayElement = (elements) => elements [
   getRandomPositiveInteger(0, elements.length - 1)
 ];
 /**
- *Создание объекта, описывающего случайное объявление
- * @return {object} adNearby - объект с описанием объявления
+ * Создание объекта, описывающего случайное объявление
+ * Поле offer тип string
+ * @return {object} adNearby - объект с описанием похожего объявления
  */
 const adNearby = () => ({
-  author: `img/avatars/user${ fotoNumber }.png`,
+  author: `img/avatars/user${ String(getRandomArrayElement(FOTO_NUMBER)).padStart(2,0) }.png`,
+  offer: `${getRandomArrayElement(TITLE)},
+     ${ ADDRESS },
+     ${getRandomArrayElement(PRICE.MIN, PRICE.MAX)},
+     ${getRandomArrayElement(TYPE)},
+     ${getRandomArrayElement(ROOMS.MIN, ROOMS.MAX)},
+     ${getRandomArrayElement(GUESTS.PERSON_MIN, GUESTS.PERSON_MAX)},
+     ${getRandomArrayElement(CHECK_IN)},
+     ${getRandomArrayElement(CHECK_OUT)},
+     ${getRandomArrayElement(FEATURES)},
+     ${getRandomArrayElement(DESCRIPTION)},
+     ${getRandomArrayElement(PHOTOS)}`,
 
-  offer: `${getRandomArrayElement(title)},
-     ${ address }, ${ price },
-     ${getRandomArrayElement(type)},
-     ${rooms}, ${guests},
-     ${getRandomArrayElement(checkin)},
-     ${getRandomArrayElement(checkout)},
-     ${getRandomArrayElement(features)},
-     ${getRandomArrayElement(description)},
-     ${getRandomArrayElement(photos)}`,
-
-  location: `${lat }, ${ lng}`,
+  location: `${getRandomPositiveFloat(COORDINATES.LAT_MIN, COORDINATES.LAT_MAX, COORDINATES.ZOOM)}, ${getRandomPositiveFloat(COORDINATES.LNG_MIN, COORDINATES.LNG_MAX, COORDINATES.ZOOM)}`,
 });
 /**
  * Генерация 10 случайных объявлений
  */
-const generateAdNeardys = Array.from({length: numberGeneratedAds}, adNearby);
-
+const generateAdNeardys = Array.from({length: NUMBER_GENERATED_ADS}, adNearby);
 console.log(generateAdNeardys);
