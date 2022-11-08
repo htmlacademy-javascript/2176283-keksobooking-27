@@ -26,8 +26,7 @@ const Guests = {
   PERSON_MIN: 1,
   PERSON_MAX: 10
 };
-const CHECK_IN = [ '12:00', '13:00', '14:00' ];
-const CHECK_OUT = [ '12:00', '13:00', '14:00' ];
+const CHECK_IN_OUT = [ '12:00', '13:00', '14:00' ];
 const FEATURES = [ 'wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner' ];
 const DESCRIPTION = [ 'Уютная спальня', 'Просторная гостинная', 'Комфортный номер', ];
 const PHOTOS = [
@@ -35,38 +34,36 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
-/*
-const location = {
-  lat: getRandomPositiveFloat(Coordinates.LAT_MIN, Coordinates.LAT_MAX, Coordinates.ZOOM),
-  lng: getRandomPositiveFloat(Coordinates.LNG_MIN, Coordinates.LNG_MAX, Coordinates.ZOOM)
-};
-*/
-const getRandomLocationLat = () =>
-  getRandomPositiveFloat(Coordinates.LAT_MIN, Coordinates.LAT_MAX, Coordinates.ZOOM);
-const getRandomLocationLng = () =>
-  getRandomPositiveFloat(Coordinates.LNG_MIN, Coordinates.LNG_MAX, Coordinates.ZOOM);
 /**
  * Создание объекта, описывающего случайное объявление
  * @return {object} adNearby - объект с описанием похожего объявления
  */
-const adNearby = (index) => ({
-  author: `img/avatars/user${ index.toString().padStart(2,0) }.png`,
-  offer: `title: ${getRandomArrayElement(TITLE)},
-     addres: ${getRandomLocationLat() }, ${ getRandomLocationLng()},
-     price: ${getRandomPositiveInteger(Price.MIN, Price.MAX)},
-     type: ${getRandomArrayElement(TYPE)},
-     rooms: ${getRandomPositiveInteger(Rooms.MIN, Rooms.MAX)},
-     guests: ${getRandomPositiveInteger(Guests.PERSON_MIN, Guests.PERSON_MAX)},
-     check in: ${getRandomArrayElement(CHECK_IN)},
-     check out: ${getRandomArrayElement(CHECK_OUT)},
-     features: ${getRandomArrayElement(FEATURES)},
-     description: ${getRandomArrayElement(DESCRIPTION)},
-     photos: ${getRandomArrayElement(PHOTOS)}`,
-  location: `${getRandomLocationLat() }, ${ getRandomLocationLng()}`
-});
+const generateAd = (index) => {
+  const location = {
+    lat: getRandomPositiveFloat(Coordinates.LAT_MIN, Coordinates.LAT_MAX, Coordinates.ZOOM),
+    lng: getRandomPositiveFloat(Coordinates.LNG_MIN, Coordinates.LNG_MAX, Coordinates.ZOOM),
+  };
+  return {
+    author: `img/avatars/user${ index.toString().padStart(2,0) }.png`,
+    offer: {
+      title: getRandomArrayElement(TITLE),
+      address: `${location.lat}, ${location.lng}`,
+      price: getRandomPositiveInteger(Price.MIN, Price.MAX),
+      type: getRandomArrayElement(TYPE),
+      rooms: getRandomPositiveInteger(Rooms.MIN, Rooms.MAX),
+      guests: getRandomPositiveInteger(Guests.PERSON_MIN, Guests.PERSON_MAX),
+      checkin: getRandomArrayElement(CHECK_IN_OUT),
+      checkout: getRandomArrayElement(CHECK_IN_OUT),
+      features: getRandomArrayElement(FEATURES),
+      description: getRandomArrayElement(DESCRIPTION),
+      photos: getRandomArrayElement(PHOTOS),
+    },
+    location: location,
+  };
+};
 /**
  * Генерация 10 случайных объявлений
  */
-const generateAdNeardys = () => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => adNearby(index + 1));
+const generateAds = () => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => generateAd(index + 1));
 
-export { generateAdNeardys };
+export { generateAds};

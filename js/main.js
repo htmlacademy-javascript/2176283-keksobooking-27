@@ -1,3 +1,2 @@
-import { generateAdNeardys } from './data.js';
+import './popup.js';
 
-generateAdNeardys();
