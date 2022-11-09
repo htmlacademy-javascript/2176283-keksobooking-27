@@ -1,5 +1,3 @@
-import { generateAds } from './data.js';
-const semularAds = generateAds();
 /**
  * Перевод типа жилья
  */
@@ -49,8 +47,9 @@ const photosAd = (adElement, offerPhotos) => {
 /**
  * Создание объявлений поблизости
  */
-semularAds.forEach((author, offer) => {
+const semularAds = ({author, offer}) => {
   const adElement = cardAd.cloneNode(true);
+  adElement.querySelector('.popup__avatar').src = author.avatar;
   adElement.querySelector('.popup__title').textContent = offer.title;
   adElement.querySelector('.popup__text--address').textContent = offer.address;
   adElement.querySelector('.popup__text--price').textContent = `${offer.price }₽/ночь`;
@@ -60,10 +59,10 @@ semularAds.forEach((author, offer) => {
   featuresAd(adElement, offer.features);
   descriptionAd(adElement, offer.description);
   photosAd(adElement, offer.photos);
-  adElement.querySelector('.popup__avatar').src = author.avatar;
+
 
   mapCanvas.appendChild(adElement);
-  return adElement;
-});
+};
 
+export {semularAds};
 

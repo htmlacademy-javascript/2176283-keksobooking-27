@@ -66,4 +66,4 @@ const generateAd = (index) => {
  */
 const generateAds = () => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => generateAd(index + 1));
 
-export { generateAds};
+export { generateAds };
