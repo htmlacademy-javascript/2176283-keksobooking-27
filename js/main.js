@@ -1,4 +1,5 @@
-import { semularAds } from './popup.js';
+import { renderds } from './popup.js';
 import { generateAds } from './data.js';
 
-semularAds(generateAds());
+const ads = generateAds();
+renderds(ads[6]);

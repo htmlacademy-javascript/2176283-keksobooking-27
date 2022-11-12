@@ -31,6 +31,17 @@ const getRandomPositiveFloat = (min, max, prec = 1) => {
   return +result.toFixed(prec);
 };
 /**
+ * Генерация случайной длины массива
+ */
+const getRandomLength = (elements) => {
+  const lengthElements = Math.ceil(Math.random() * elements.length);
+  const newElements = [];
+  for (let i = 0; i < lengthElements; i++) {
+    newElements.push(elements[i]);
+  }
+  return newElements;
+};
+/**
  * Генерация случайного индекса массива
  * @param {object} elements - массив с данными
  * @return {integer} index - случайный индекс массива
@@ -43,4 +54,5 @@ export {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
+  getRandomLength,
 };
