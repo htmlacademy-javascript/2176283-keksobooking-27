@@ -1,18 +1,20 @@
-
 /**
  * Перевод типа жилья
  */
-const TYPE_TRANSLATE = {
-  flat: 'Квартира',
-  bungalow:'Бунгало',
-  house:'Дом',
-  palace:'Дворец',
-  hotel:'Отель',
+const TypeTranslate = {
+  FLAT: 'Квартира',
+  BUNGALOW: 'Бунгало',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+  HOTEL: 'Отель',
 };
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const mapCanvas = document.querySelector('#map-canvas');
+
 /**
  * Формирование списка удобств
+ * @param adContainer - шаблон объявления
+ * @param {object} offerFeatures - сгенерированный список(массив) удобств
  */
 const featuresAd = (adContainer, offerFeatures) => {
   const features = adContainer.querySelector('.popup__features');
@@ -24,10 +26,13 @@ const featuresAd = (adContainer, offerFeatures) => {
     features.appendChild(featureItem);
   }
 };
+
 /**
  * Проверка на наличие данных в поле "Описание"
+ * @param adContainer - шаблон объявления
+ * @param {text} offerDescription - сгенерированное описание объявления
  */
-const descriptionAd = (adContainer, offerDescription) => {
+const createDescriptionAd = (adContainer, offerDescription) => {
   const descriptionElement = adContainer.querySelector('.popup__description');
   if (offerDescription && offerDescription.length) {
     descriptionElement.textContent = offerDescription;
@@ -35,8 +40,10 @@ const descriptionAd = (adContainer, offerDescription) => {
     descriptionElement.remove();
   }
 };
+
 /**
  * Создание фото
+ * @param {object} photo - offerPhotos
  */
 const createPhoto = (photo) => {
   const photoElement = document.createElement('img');
@@ -47,10 +54,13 @@ const createPhoto = (photo) => {
   photoElement.height = '40';
   return photoElement;
 };
+
 /**
  * Формирование списка фотографий
+ * @param adContainer - шаблон объявления
+ * @param {object} offerPhotos - сгенерированный список(массив) фотографий
  */
-const photosAd = (adContainer, offerPhotos) => {
+const createPhotosAd = (adContainer, offerPhotos) => {
   const photoList = adContainer.querySelector('.popup__photos');
   if (offerPhotos && offerPhotos.length) {
     photoList.innerHTML = '';
@@ -62,23 +72,26 @@ const photosAd = (adContainer, offerPhotos) => {
     photoList.remove();
   }
 };
+
 /**
- * Создание объявлений поблизости
+ * Создание объявления поблизости
+ * @param {object} author - сгенерированный адрес изображения
+ * @param {object} offer - сгенерированная информация объявления
  */
-const renderds = ({author, offer}) => {
+const renderAds = ({author, offer}) => {
   const adContainer = cardTemplate.cloneNode(true);
   adContainer.querySelector('.popup__avatar').src = author;
   adContainer.querySelector('.popup__title').textContent = offer.title;
   adContainer.querySelector('.popup__text--address').textContent = offer.address;
   adContainer.querySelector('.popup__text--price').textContent = `${offer.price }₽/ночь`;
-  adContainer.querySelector('.popup__type').textContent = TYPE_TRANSLATE[offer.type];
+  adContainer.querySelector('.popup__type').textContent = TypeTranslate[offer.type];
   adContainer.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комната(ы) для ${offer.guests} гостей`;
   adContainer.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   featuresAd(adContainer, offer.features);
-  descriptionAd(adContainer, offer.description);
-  photosAd(adContainer, offer.photos);
+  createDescriptionAd(adContainer, offer.description);
+  createPhotosAd(adContainer, offer.photos);
 
   return mapCanvas.appendChild(adContainer);
 };
 
-export {renderds};
+export {renderAds};

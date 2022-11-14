@@ -5,7 +5,6 @@ import {
   getRandomLength,
 } from './util.js';
 
-const NUMBER_GENERATED_ADS = 10;
 const TITLE = [ 'то, что Вам понравится', 'лучшее предложение', 'это Вас заинтересует' ];
 const Coordinates = {
   LAT_MIN: 35.65000,
@@ -37,7 +36,7 @@ const PHOTOS = [
 ];
 /**
  * Создание объекта, описывающего случайное объявление
- * @return {object} adNearby - объект с описанием похожего объявления
+ * @return {object} generateAd - объект с описанием похожего объявления
  */
 const generateAd = (index) => {
   const location = {
@@ -65,6 +64,6 @@ const generateAd = (index) => {
 /**
  * Генерация 10 случайных объявлений
  */
-const generateAds = () => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => generateAd(index + 1));
+const generateAds = (NUMBER_GENERATED_ADS) => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => generateAd(index + 1));
 
 export { generateAds };
