@@ -1,3 +1,5 @@
-import { generateAdNeardys } from './data.js';
+import { renderds } from './popup.js';
+import { generateAds } from './data.js';
 
-generateAdNeardys();
+const ads = generateAds();
+renderds(ads[6]);
