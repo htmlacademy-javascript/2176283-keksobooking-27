@@ -2,6 +2,7 @@ import {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
+  getRandomLength,
 } from './util.js';
 
 const NUMBER_GENERATED_ADS = 10;
@@ -54,9 +55,9 @@ const generateAd = (index) => {
       guests: getRandomPositiveInteger(Guests.PERSON_MIN, Guests.PERSON_MAX),
       checkin: getRandomArrayElement(CHECK_IN_OUT),
       checkout: getRandomArrayElement(CHECK_IN_OUT),
-      features: getRandomArrayElement(FEATURES),
+      features: getRandomLength(FEATURES),
       description: getRandomArrayElement(DESCRIPTION),
-      photos: getRandomArrayElement(PHOTOS),
+      photos: getRandomLength(PHOTOS),
     },
     location: location,
   };
@@ -66,4 +67,4 @@ const generateAd = (index) => {
  */
 const generateAds = () => Array.from({length: NUMBER_GENERATED_ADS}, (_, index) => generateAd(index + 1));
 
-export { generateAds};
+export { generateAds };
