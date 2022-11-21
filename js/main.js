@@ -1,10 +1,14 @@
-import { renderAds } from './popup.js';
+import { renderAd } from './popup.js';
 import { generateAds } from './data.js';
 import {enablePage, disablePage} from './page.js';
 import './ad-form.js';
+import {mapLoad, setAdPins} from './map.js';
 
-//enablePage();
-//disablePage();
+const drawAds = generateAds(10);
 
-const drawAd = generateAds(10);
-renderAds(drawAd[6]);
+mapLoad(() => {
+  disablePage();
+  setAdPins(drawAds, renderAd);
+});
+
+enablePage();
