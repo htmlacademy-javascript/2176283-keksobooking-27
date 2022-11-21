@@ -1,10 +1,13 @@
 const adForm = document.querySelector('.ad-form');
 const roomsField = adForm.querySelector('#room_number');
 const capacityField = adForm.querySelector('#capacity');
+const capacityOptions = capacityField.querySelectorAll('option');
 const timeInField = adForm.querySelector('#timein');
 const timeOutField = adForm.querySelector('#timeout');
 const typeInput = adForm.querySelector('#type');
 const priceField = adForm.querySelector('#price');
+const sliderElement = document.querySelector('.ad-form__slider');
+const addressField = document.querySelector('#address');
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -13,54 +16,45 @@ const pristine = new Pristine(adForm, {
 });
 
 const typePriceMinimum = {
-  bungalow: '0',
-  flat: '1000',
-  hotel: '3000',
-  house: '5000',
-  palace: '10000',
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
 };
 
-const roomsOption = {
-  1: ['1'],
-  2: ['1', '2'],
-  3: ['1', '2', '3'],
-  100: ['0']
+const ROOMS_OPTION = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
 };
 
-const capacityOption = {
-  0: ['100'],
-  1: ['1', '2', '3'],
-  2: ['2', '3'],
-  3: ['3']
+/**
+ * Синхронизация поля "Кол-во комнат" с полем "Кол-во мест"
+ */
+const validateRooms = () => {
+  capacityOptions.forEach((items) => {
+    items.disabled = true;
+  });
+  ROOMS_OPTION[roomsField.value].forEach((items) => {
+    capacityOptions.forEach((option) => {
+      if (Number(option.value) === items) {
+        option.selected = true;
+        option.disabled = false;
+      }
+    });
+  });
 };
-
-function validateRooms () {
-  return roomsOption[roomsField.value].includes(capacityField.value);
-}
-
-function getRoomsErrorMessage () {
-  return `Для указанного кол-ва гостей требуется ${capacityOption[capacityField.value].join(' или ')} комнаты.`;
-}
-
-function getСapacityErrorMessage () {
-  return `Вместимость указанного кол-ва комнат для ${roomsOption[roomsField.value].join(' или ')} гостей.`;
-}
 
 const onRoomsOptionChange = () => {
   pristine.validate(roomsField);
   pristine.validate(capacityField);
 };
 
-const onCapacityOptionChange = () => {
-  pristine.validate(roomsField);
-  pristine.validate(capacityField);
-};
+pristine.addValidator(roomsField, validateRooms);
 
-pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-pristine.addValidator(capacityField, validateRooms, getСapacityErrorMessage);
-
-roomsField.addEventListener('change', onRoomsOptionChange);
-capacityField.addEventListener('change', onCapacityOptionChange);
+roomsField.addEventListener('change', onRoomsOptionChange, validateRooms);
 
 /**
  * Синхронизация время выезда
@@ -78,17 +72,66 @@ timeInField.addEventListener('change', onSynchronizationTimeIn);
 timeOutField.addEventListener('change', onSynchronizationTimeOut);
 
 /**
+ * Отрисовка слайдера для поля "Цена за ночь"
+ */
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: typePriceMinimum[typeInput.value],
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+/**
+ * Подключение поля ввода
+ */
+sliderElement.noUiSlider.on('update', () => {
+  priceField.value = sliderElement.noUiSlider.get();
+});
+
+priceField.addEventListener('change', function () {
+  sliderElement.noUiSlider.set(this.value);
+});
+
+/**
  * Синхронизация типа жилья и минимальной цены
  * @param {object} evt - объект события
  */
-const typeInputChange = (evt) => {
+const ontypeInputChange = (evt) => {
   if (evt.target.value === typeInput.value) {
-    priceField.placeholder = typePriceMinimum[typeInput.value];
     priceField.min = typePriceMinimum[typeInput.value];
+    priceField.placeholder = typePriceMinimum[typeInput.value];
+    sliderElement.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 100000,
+      },
+      start: typePriceMinimum[typeInput.value],
+      step: 1,
+    });
+    pristine.validate();
   }
 };
 
-typeInput.addEventListener('change', typeInputChange);
+typeInput.addEventListener('change', ontypeInputChange);
+
+const onAddressFocus = () => {
+  addressField.blur();
+};
+
+addressField.addEventListener('focus', onAddressFocus);
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();

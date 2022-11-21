@@ -78,7 +78,7 @@ const createPhotosAd = (adContainer, offerPhotos) => {
  * @param {object} author - сгенерированный адрес изображения
  * @param {object} offer - сгенерированная информация объявления
  */
-const renderAds = ({author, offer}) => {
+const renderAd = ({author, offer}) => {
   const adContainer = cardTemplate.cloneNode(true);
   adContainer.querySelector('.popup__avatar').src = author;
   adContainer.querySelector('.popup__title').textContent = offer.title;
@@ -91,7 +91,7 @@ const renderAds = ({author, offer}) => {
   createDescriptionAd(adContainer, offer.description);
   createPhotosAd(adContainer, offer.photos);
 
-  return mapCanvas.appendChild(adContainer);
+  return adContainer;
 };
 
-export {renderAds};
+export {renderAd};
