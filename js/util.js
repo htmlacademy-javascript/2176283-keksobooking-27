@@ -50,9 +50,30 @@ const getRandomArrayElement = (elements) => elements [
   getRandomPositiveInteger(0, elements.length - 1)
 ];
 
+const showAlertError = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '1000';
+  alertContainer.style.position = 'fixed';
+  alertContainer.style.left = '10%';
+  alertContainer.style.top = '550px';
+  alertContainer.style.right = '10%';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'rgba(255, 0, 0, 0.9)';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 7000);
+};
 export {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
   getRandomLength,
+  showAlertError,
 };

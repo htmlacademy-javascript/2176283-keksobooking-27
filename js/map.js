@@ -1,13 +1,12 @@
-const buttonClear = document.querySelector('.ad-form__reset');
-const map = L.map('map-canvas');
-const addressField = document.querySelector('#address');
-
-const CENTER_TOKYO = {
+const centerTokyo = {
   lat: 35.681729,
   lng: 139.753927,
 };
+const zoom = 12;
 
-const ZOOM = 12;
+const map = L.map('map-canvas');
+const addressField = document.querySelector('#address');
+const buttonClear = document.querySelector('.ad-form__reset');
 
 const updateAddress = (location) => {
   const lat = location.lat.toFixed(5);
@@ -17,8 +16,8 @@ const updateAddress = (location) => {
 
 const mapLoad = (enable) => {
   map.on('load', enable);
-  map.setView(CENTER_TOKYO, ZOOM);
-  updateAddress(CENTER_TOKYO);
+  map.setView(centerTokyo, zoom);
+  updateAddress(centerTokyo);
 };
 
 L.tileLayer(
@@ -27,6 +26,7 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
 /**
  * Создание главной метки
  */
@@ -35,6 +35,7 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
 /**
  * Создание похожих меток
  */
@@ -48,7 +49,7 @@ const adPinIcon = L.icon({
  * Добавление главной метки на карту
  */
 const mainPinMarker = L.marker(
-  CENTER_TOKYO,
+  centerTokyo,
   {
     draggable: true,
     icon: mainPinIcon,
@@ -56,6 +57,7 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.addTo(map);
+
 /**
  * Создание группы меток
  */
@@ -67,14 +69,17 @@ const createMarkerGroup = (drawAds, renderAd) => {
       drawAd.location,
       {icon:adPinIcon}
     );
-    marker.addTo(markerGroup).bindPopup(renderAd(drawAd));
+    marker
+      .addTo(markerGroup)
+      .bindPopup(renderAd(drawAd));
   });
 };
 
-const setAdPins = (drawAds, renderAd) => {
+const setAdPins = (Ads, renderAd) => {
   markerGroup.clearLayers();
-  createMarkerGroup(drawAds, renderAd);
+  createMarkerGroup(Ads, renderAd);
 };
+
 /**
  * Дублирование координат метки в поле "Адрес(координаты)"
  */
@@ -86,9 +91,10 @@ mainPinMarker.on('move', (evt) => {
  * Возврат карты и главной метки в начальное состояние
  */
 buttonClear.addEventListener('click', () => {
-  updateAddress(CENTER_TOKYO);
-  mainPinMarker.setLatLng(CENTER_TOKYO);
-  map.setView(CENTER_TOKYO, ZOOM);
+  updateAddress(centerTokyo);
+  mainPinMarker.setLatLng(centerTokyo);
+  map.setView(centerTokyo, zoom);
+  map.closePopup();
 });
 
 export {mapLoad, setAdPins};

@@ -9,7 +9,6 @@ const TypeTranslate = {
   HOTEL: 'Отель',
 };
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
 
 /**
  * Формирование списка удобств
@@ -18,13 +17,15 @@ const mapCanvas = document.querySelector('#map-canvas');
  */
 const featuresAd = (adContainer, offerFeatures) => {
   const features = adContainer.querySelector('.popup__features');
-  features.innerHTML = '';
-  for (let i = 0; i < offerFeatures.length; i++) {
-    const featureItem = document.createElement('li');
-    featureItem.classList.add('popup__feature');
-    featureItem.classList.add(`popup__feature--${ offerFeatures[i]}`);
-    features.appendChild(featureItem);
-  }
+  if (offerFeatures && offerFeatures.length) {
+    features.innerHTML = '';
+    for (let i = 0; i < offerFeatures.length; i++) {
+      const featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature');
+      featureItem.classList.add(`popup__feature--${ offerFeatures[i]}`);
+      features.appendChild(featureItem);
+    }
+  } else {features.remove();}
 };
 
 /**
@@ -80,7 +81,7 @@ const createPhotosAd = (adContainer, offerPhotos) => {
  */
 const renderAd = ({author, offer}) => {
   const adContainer = cardTemplate.cloneNode(true);
-  adContainer.querySelector('.popup__avatar').src = author;
+  adContainer.querySelector('.popup__avatar').src = author.avatar;
   adContainer.querySelector('.popup__title').textContent = offer.title;
   adContainer.querySelector('.popup__text--address').textContent = offer.address;
   adContainer.querySelector('.popup__text--price').textContent = `${offer.price }₽/ночь`;

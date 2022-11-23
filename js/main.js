@@ -1,14 +1,20 @@
 import { renderAd } from './popup.js';
-import { generateAds } from './data.js';
-import {enablePage, disablePage} from './page.js';
-import './ad-form.js';
+import {disableForm, enableForm, enableFilters} from './page.js';
+import {eventListenersOfForm, setUserForm} from './ad-form.js';
 import {mapLoad, setAdPins} from './map.js';
-
-const drawAds = generateAds(10);
+import {getData} from './api.js';
 
 mapLoad(() => {
-  disablePage();
-  setAdPins(drawAds, renderAd);
+  disableForm();
 });
 
-enablePage();
+getData((ads) => {
+  setAdPins(ads.slice(5, 15), renderAd);
+  enableFilters();
+});
+
+enableForm();
+
+eventListenersOfForm();
+
+setUserForm();
