@@ -35,7 +35,10 @@ const sendData = ((onSuccess, onFail, body) => {
     .then((response) => {
       if (response.ok) {
         onSuccess();
-      } else {showAlertError('Не удалось опубликовать объявление. Попробуйте ещё раз');}
+      }
+      else {
+        showAlertError('Не удалось опубликовать объявление. Попробуйте ещё раз');
+      }
     })
     .catch(() => {
       onFail();
