@@ -1,3 +1,5 @@
+const CLOSING_TIME_OF_MESSAGE = 5000;
+
 /**
  * Генерация целого числа в диапазоне
  * @param {integer} min — минимум диапазона
@@ -68,7 +70,7 @@ const showAlertError = (message) => {
 
   setTimeout(() => {
     alertContainer.remove();
-  }, 7000);
+  }, CLOSING_TIME_OF_MESSAGE);
 };
 export {
   getRandomPositiveInteger,

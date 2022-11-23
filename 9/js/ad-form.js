@@ -46,7 +46,8 @@ const validateRooms = () => {
         option.disabled = false;
       }
     });
-  }); return ROOMS_OPTION[roomsField.value].includes(Number(capacityField.value));
+  });
+  return ROOMS_OPTION[roomsField.value].includes(Number(capacityField.value));
 };
 
 const onRoomsOptionChange = () => {

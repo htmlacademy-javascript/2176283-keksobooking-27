@@ -1,8 +1,8 @@
+const ZOOM = 12;
 const centerTokyo = {
   lat: 35.681729,
   lng: 139.753927,
 };
-const zoom = 12;
 
 const map = L.map('map-canvas');
 const addressField = document.querySelector('#address');
@@ -16,7 +16,7 @@ const updateAddress = (location) => {
 
 const mapLoad = (enable) => {
   map.on('load', enable);
-  map.setView(centerTokyo, zoom);
+  map.setView(centerTokyo, ZOOM);
   updateAddress(centerTokyo);
 };
 
@@ -75,9 +75,9 @@ const createMarkerGroup = (drawAds, renderAd) => {
   });
 };
 
-const setAdPins = (Ads, renderAd) => {
+const setAdPins = (ads, renderAd) => {
   markerGroup.clearLayers();
-  createMarkerGroup(Ads, renderAd);
+  createMarkerGroup(ads, renderAd);
 };
 
 /**
@@ -93,7 +93,7 @@ mainPinMarker.on('move', (evt) => {
 buttonClear.addEventListener('click', () => {
   updateAddress(centerTokyo);
   mainPinMarker.setLatLng(centerTokyo);
-  map.setView(centerTokyo, zoom);
+  map.setView(centerTokyo, ZOOM);
   map.closePopup();
 });
 
