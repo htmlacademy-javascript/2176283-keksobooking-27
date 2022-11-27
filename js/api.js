@@ -2,10 +2,10 @@ import {disableFilters} from './page.js';
 import {showAlertError} from './util.js';
 
 const GET_DATA_URL = 'https://27.javascript.pages.academy/keksobooking/data';
-const SEND_DATA_URL = 'https://27.javascript.pages.academy/keksobooking';
+const SEND_DATA_URL = 'https://27.javascript.pages.academy/keksobookin';
 
 /**
- * getData - загрузка объявлений с сервера
+ * Загрузка похожих объявлений с сервера
  * @param {function} onSuccess - функция при успехе загрузки данных
  */
 const getData = (onSuccess) => {
@@ -21,11 +21,11 @@ const getData = (onSuccess) => {
 };
 
 /**
- *
+ * Отправка объявления на сервер
  * @param {function} onSuccess - функция успешной отправки
  * @param {function} onFail - функция ошибки
  */
-const sendData = ((onSuccess, onFail, body) => {
+const sendData = (onSuccess, onFail, body) => {
   fetch (SEND_DATA_URL,
     {
       method: 'POST',
@@ -37,12 +37,12 @@ const sendData = ((onSuccess, onFail, body) => {
         onSuccess();
       }
       else {
-        showAlertError('Не удалось опубликовать объявление. Попробуйте ещё раз');
+        onFail();
       }
     })
     .catch(() => {
       onFail();
     });
-});
+};
 
 export {getData, sendData};
