@@ -1,20 +1,33 @@
-import { renderAd } from './popup.js';
+import {addEventListenersOnForm, setUserForm, addOnClearButton} from './ad-form.js';
 import {disableForm, enableForm, enableFilters} from './page.js';
-import {eventListenersOfForm, setUserForm} from './ad-form.js';
-import {mapLoad, setAdPins} from './map.js';
+import {mapLoad, setAdPins, submitClearButton} from './map.js';
+import{setOnFilterChange, getFilterAds} from './filter.js';
+import { renderAd } from './popup.js';
 import {getData} from './api.js';
-const NUMBER_OF_ADS = 10;
-mapLoad(() => {
-  disableForm();
-});
+import {debounce} from './util.js';
+import './avatar.js';
 
-getData((ads) => {
-  setAdPins(ads.slice(0, NUMBER_OF_ADS), renderAd);
-  enableFilters();
+
+const RERENDER_DELAY = 500;
+
+const getPins = () => {
+  getData((ads) => {
+    setAdPins(getFilterAds(ads), renderAd);
+    setOnFilterChange(debounce(
+      () => setAdPins(getFilterAds(ads), renderAd),
+      RERENDER_DELAY,
+    ));
+    enableFilters();
+  });
+};
+
+mapLoad(() => {
+  getPins();
+  disableForm();
 });
 
 enableForm();
 
-eventListenersOfForm();
-
-setUserForm();
+addEventListenersOnForm();
+addOnClearButton(submitClearButton, getPins);
+setUserForm(submitClearButton, getPins);

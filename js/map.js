@@ -1,4 +1,5 @@
 const ZOOM = 12;
+const RESERT_PHOTO = 'img/muffin-grey.svg';
 const centerTokyo = {
   lat: 35.681729,
   lng: 139.753927,
@@ -6,7 +7,9 @@ const centerTokyo = {
 
 const map = L.map('map-canvas');
 const addressField = document.querySelector('#address');
-const buttonClear = document.querySelector('.ad-form__reset');
+const mapFiltersField = document.querySelector('.map__filters');
+const previewAvatar = document.querySelector('.ad-form-header__preview img');
+const previewPhoto = document.querySelector('.ad-form__photo');
 
 const updateAddress = (location) => {
   const lat = location.lat.toFixed(5);
@@ -88,13 +91,16 @@ mainPinMarker.on('move', (evt) => {
 });
 
 /**
- * Возврат карты и главной метки в начальное состояние
+ * При нажатии на кнопку "Опубликовать" или "Очистить" возврат карты, фильтров и формы в начальное состояние
  */
-buttonClear.addEventListener('click', () => {
-  updateAddress(centerTokyo);
-  mainPinMarker.setLatLng(centerTokyo);
-  map.setView(centerTokyo, ZOOM);
+const submitClearButton = () => {
   map.closePopup();
-});
+  map.setView(centerTokyo, ZOOM);
+  mainPinMarker.setLatLng(centerTokyo);
+  updateAddress(centerTokyo);
+  mapFiltersField.reset();
+  previewPhoto.innerHTML = '';
+  previewAvatar.src = RESERT_PHOTO;
+};
 
-export {mapLoad, setAdPins};
+export {mapLoad, setAdPins, submitClearButton};

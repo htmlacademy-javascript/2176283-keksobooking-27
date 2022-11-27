@@ -19,12 +19,12 @@ const featuresAd = (adContainer, offerFeatures) => {
   const features = adContainer.querySelector('.popup__features');
   if (offerFeatures && offerFeatures.length) {
     features.innerHTML = '';
-    for (let i = 0; i < offerFeatures.length; i++) {
+    offerFeatures.forEach((item) =>{
       const featureItem = document.createElement('li');
       featureItem.classList.add('popup__feature');
-      featureItem.classList.add(`popup__feature--${ offerFeatures[i]}`);
+      featureItem.classList.add(`popup__feature--${item}`);
       features.appendChild(featureItem);
-    }
+    });
   } else {features.remove();}
 };
 

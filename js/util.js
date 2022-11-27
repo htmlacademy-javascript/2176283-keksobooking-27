@@ -1,57 +1,61 @@
 const CLOSING_TIME_OF_MESSAGE = 5000;
+const successTemplate = document.querySelector('#success')
+  .content.querySelector('.success');
+const errorTemplate = document.querySelector('#error')
+  .content.querySelector('.error');
+
+const escapeKey = (evt) => evt.key === 'Escape';
 
 /**
- * Генерация целого числа в диапазоне
- * @param {integer} min — минимум диапазона
- * @param {integer} max  — максимум диапазона
- * @param {integer} prec — количество знаков после запятой, по-умолчанию 5
- * @return {integer} — случайное число
+ * Отображение сообщения об успешной отправке
+ * @param {*} element - всплывающее окно при успешной отправке
  */
-const getRandomPositiveInteger = (min, max) => {
-  if (min < 0 || max < 0) {
-    return NaN;
-  }
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
+const showSuccessMessage = (element) => {
+  document.body.append(element);
+  const onClickKeydownCloseModal = (evt) => {
+    if (escapeKey) {
+      evt.preventDefault();
+      document.removeEventListener('click', onClickKeydownCloseModal);
+      document.removeEventListener('keydown', onClickKeydownCloseModal);
+      element.remove();
+    }
+  };
+  document.addEventListener('click', onClickKeydownCloseModal);
+  document.addEventListener('keydown', onClickKeydownCloseModal);
 };
-/**
- * Генерация числа с плавающей точкой в диапазоне
- * @param {integer} min — минимум диапазона
- * @param {integer} max  — максимум диапазона
- * @param {integer} prec — количество знаков после запятой, по-умолчанию 5
- * @return {float} — случайное число
- */
-const getRandomPositiveFloat = (min, max, prec = 1) => {
-  if (min < 0 || max < 0 || prec < 0) {
-    return NaN;
-  }
-  const lower = Math.min(min, max);
-  const upper = Math.max(min, max);
-  const result = Math.random() * (upper - lower) + lower;
-  return +result.toFixed(prec);
-};
-/**
- * Генерация случайной длины массива
- */
-const getRandomLength = (elements) => {
-  const lengthElements = Math.ceil(Math.random() * elements.length);
-  const newElements = [];
-  for (let i = 0; i < lengthElements; i++) {
-    newElements.push(elements[i]);
-  }
-  return newElements;
-};
-/**
- * Генерация случайного индекса массива
- * @param {object} elements - массив с данными
- * @return {integer} index - случайный индекс массива
- */
-const getRandomArrayElement = (elements) => elements [
-  getRandomPositiveInteger(0, elements.length - 1)
-];
 
+const formSuccessMessage = () => {
+  const alertMessage = successTemplate.cloneNode(true);
+  showSuccessMessage(alertMessage);
+};
+
+/**
+ * Отображение сообщения при неудачной отправке
+ * @param {*} element - всплывающее окно при неудачной отправке
+ */
+const showErrorMessage = (element) => {
+  document.body.append(element);
+  const onClickKeydownCloseModal = (evt) => {
+    if (escapeKey) {
+      evt.preventDefault();
+      document.removeEventListener('click', onClickKeydownCloseModal);
+      document.removeEventListener('keydown', onClickKeydownCloseModal);
+      element.remove();
+    }
+  };
+  document.addEventListener('click', onClickKeydownCloseModal);
+  document.addEventListener('keydown', onClickKeydownCloseModal);
+};
+
+const formErrorMessage = () => {
+  const alertMessage = errorTemplate.cloneNode(true);
+  showErrorMessage(alertMessage);
+};
+
+/**
+ * Сообщение об ошибке при загрузке данных
+ * @param {text} message - текст сообщения
+ */
 const showAlertError = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '1000';
@@ -63,19 +67,30 @@ const showAlertError = (message) => {
   alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'rgba(255, 0, 0, 0.9)';
-
   alertContainer.textContent = message;
-
   document.body.append(alertContainer);
 
   setTimeout(() => {
     alertContainer.remove();
   }, CLOSING_TIME_OF_MESSAGE);
 };
+
+/**
+ * Устранение дребезга
+ * @param {function} callback - функция фильтрации объявлений
+ * @param {*} timeoutDelay - время задержки между отображениями
+ */
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
-  getRandomPositiveInteger,
-  getRandomPositiveFloat,
-  getRandomArrayElement,
-  getRandomLength,
   showAlertError,
+  formSuccessMessage,
+  formErrorMessage,
+  debounce,
 };
